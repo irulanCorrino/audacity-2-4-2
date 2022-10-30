@@ -26,4 +26,4 @@ Help with using Audacity is available from the [Audacity Forum](https://forum.au
 Information for developers is available from the [Audacity Wiki](https://wiki.audacityteam.org/wiki/For_Developers).
 
 ## License notice:
-this version is redistributed under GPL-3-0-or-later (to my own risk, `Audacity team` [previous maintainers] were reckless enough to have a bunch of incompatible clauses in individual files [GPL-generic vs. GPL-2 vs. GPL-2-or-later], which case effectively invalidate any of their potential claims of license agreement violation
+this version is redistributed under GPL-3-0-or-later (to my own risk, `Audacity team` [previous maintainers] were reckless enough to have a bunch of incompatible clauses in individual files [GPL-generic vs. GPL-2 vs. GPL-2-or-later], which case effectively invalidate any of their potential claims of license agreement violation)
