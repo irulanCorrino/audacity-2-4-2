@@ -1,12 +1,5 @@
-Audacity(R): free, open source, cross-platform audio software for 
-multi-track recording and editing: https://www.audacityteam.org/ . 
-
-User support is provided on Audacity Forum:
-https://forum.audacityteam.org/ .
-
-We welcome feedback on Audacity, suggestions for new or improved features, 
-and bug reports. Please visit 
-https://forum.audacityteam.org/viewforum.php?f=25 .
+Audacity(R) v2.4.2.AR0: free, open source, cross-platform audio software for 
+multi-track recording and editing: https://github.com/irulanCorrino/audacity-2-4-2 
 
 Audacity is copyright (c) 1999-2019 by Audacity Team. This copyright 
 notice applies to all documents in the Audacity source code archive, 
@@ -15,6 +8,37 @@ except as otherwise noted (mostly in the lib-src subdirectories).
 
 The Audacity documentation is licensed under the Creative Commons
 Attribution 3.0 license: https://creativecommons.org/licenses/by/3.0/legalcode .
+
+/* ____________________________________________________________________________________ */
+WARNING: this version of Audacity is 'An Antique Release' --it is maintained
+not by Audacity Team, who have moved on to produce Audacity v3, but a single
+maintainer irulanCorrino. i relicense this software piece under GPL v3.0-or-later.
+previous maintainers were reckless enough to have a bunch of incompatible clauses
+in individual files [GPL-generic vs. GPL-2 vs. GPL-2-or-later], which case effectively
+invalidate any of their potential claims of license agreement violation.
+
+nevertheless i ought to provide users of this version with links to previous
+maintainer`s resources because i cannot maintain a dedicated site for it.
+be aware that you would need to dive deeply into archived forum topics or
+read past versions of the manual; they would not provide you with a support
+for this antique version ...maybe i would be able to perform bugfixes however.
+
+my intent was to keep this version 'as it is' but probably i would try improving
+it in a future, i am goint to keep its version number as associated with app`s name
+and to introduce different supplementary release naming scheme in a case of futher
+development ['AntiqueRelease<INTEGER>'].
+so for giving 'feedback on Audacity, suggestions for new or improved features, 
+and bug reports' you would have to contact me on GitHub:
+https://github.com/irulanCorrino/audacity-2-4-2/issues
+https://github.com/irulanCorrino/audacity-2-4-2/pulls
+
+here is how it was back then:
+'User support is provided on Audacity Forum:
+https://forum.audacityteam.org/ .
+
+We welcome feedback on Audacity, suggestions for new or improved features, 
+and bug reports. Please visit 
+https://forum.audacityteam.org/viewforum.php?f=25 .
 
 Compilation instructions for Audacity are provided in the source code:
 * Windows: win\build.txt
@@ -27,9 +51,14 @@ https://forum.audacityteam.org/viewforum.php?f=19 .
 If you want to suggest some simple text change in our code, please submit a 
 pull request on https://github.com/audacity/audacity/pulls . It's usually 
 best to discuss functional code changes with us first on audacity-devel: 
-https://lists.sourceforge.net/lists/listinfo/audacity-devel . 
+https://lists.sourceforge.net/lists/listinfo/audacity-devel .'
+                                                            irulan
+                                                             February 3rd, 2023
 
-Version 2.4.2
+/* ____________________________________________________________________________________ */
+
+
+Version 2.4.2.AR0
 
 Contents of this README:
 
@@ -41,25 +70,18 @@ Contents of this README:
 --------------------------------------------------------------------------------
 
 1. Licensing
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of the GNU General Public License as published by the
-Free Software Foundation; either version 2 of the License, or (at your
-option) any later version. The program source code is also freely
-available as per Section 4 of this README.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-This program is distributed in the hope that it will be useful, but WITHOUT
-ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
-License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program (in a file called LICENSE.txt); if not, go
-to https://www.gnu.org/licenses/old-licenses/gpl-2.0.html or write to
-
-  Free Software Foundation, Inc.
-  59 Temple Place - Suite 330
-  Boston, MA 02111-1307 USA
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 
 --------------------------------------------------------------------------------
