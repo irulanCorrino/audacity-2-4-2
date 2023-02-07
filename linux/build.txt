@@ -1,81 +1,327 @@
 Instructions for Building on Linux
 
-Fuller instructions that cover:
-    * Upgrading to gcc 4.9 on older Ubuntus
-    * Optional libraries
-can be found on our wiki at http://wiki.audacityteam.org/wiki/Building_On_Linux.
 
-In fact for Audacity 2.4.0 you should read those
-instructions rather than these ones, since we switched to 
-CMake for building Audacity itself for 2.4.0
+Prerequisites:
 
-Some prerequisites:
+- Repository sources (sources.list) must include source code sources.
+- For MP3 / FFmpeg support, "non-free" repositories may need to be enabled.
+- Root access is required for installation (usually via "sudo").
+- gcc >= 4.9
+- cmake ( http://www.cmake.org/ ) >= 3.15
+- git
 
 - Audacity requires gcc 4.9 or later to build.
+
+On a modern Debian based distro, e.g. Ubuntu 20.04 (focal), you would do:
+
+    sudo apt-get install build-essential cmake git
 
 - CMake ( http://www.cmake.org/ ) is required to build the local copy of 
   the libsoxr resampling library used by Audacity.
 
-On a modern Debian distro, e.g. Ubuntu 16.04 (bionic), you would do:
+- Auto-tools are also needed.
 
-sudo apt-get install build-essential cmake
+    sudo apt-get install autoconf automake
+
+
+Dependencies:
+
+Audacity's fork of wxWidgets 3.1.3 (https://github.com/audacity/wxWidgets) should
+be used as this includes bug fixes that are not yet available upstream.
+WxWidgets should be built with gtk2 as gtk3 is not yet fully supported.
 
 - libasound and gtk are required. Having gtk2 and gtk3 too  
   may not be required, but compilation works if both are.
 
-- Auto-tools are also needed.
+(The package names below are those used by Ubuntu 20.04.)
+For Debian / Ubuntu based distributions, these packages may be installed from
+the command line with:
+    sudo apt install <package-name>
 
-sudo apt-get install libasound2-dev libgtk2.0-dev libgtk-3-dev
-sudo apt-get install autoconf automake
-
-- Since you will be fetching code from git repositories you 
-  will need git.
-
-sudo apt-get install git git-gui gitk
+- libgtk-3-dev
+- libgtk2.0-dev
+- libasound2-dev
+- python3-minimal
+- libavformat-dev
+- libjack-jackd2-dev
+- WxWidgets 3.1 built with gtk2. (see note below)
 
 
 wxWidgets:
 
- 1) Clone wxWidgets and checkout 3.1.3 from the Audacity fork of the 
-    wxWidgets project: 
-       https://github.com/audacity/wxWidgets/....
+1) Clone wxWidgets [as unprivileged user]:
+    cd /$HOME
+    mkdir ./builds
+    cd ./builds
+    git clone --recurse-submodules https://github.com/irulanCorrino/wxWidgets-Audacity.git
 
-    for example
-      mkdir ./wxWidgets
-      cd ./wxWidgets
-      git clone --recurse-submodules https://github.com/audacity/wxWidgets/
+If you forgot the --recurse-submodules, you can correct that later by:
+    git submodule update --init
 
-    Don't be tempted to use Widgets already installed on Linux because this 
-    will typically be a different version and will cause problems.              
 
-    IF you forgot the --recurse-submodules, you can correct that later by:
-      git submodule update --init
+    Don't be tempted to use Widgets installed from your Linux distribution`s repositories because this 
+    will be a different version and will fail your build.              
 
-  2) Follow instructions for building at 
-    https://github.com/audacity/wxWidgets/blob/v3.1.3/docs/gtk/install.txt
 
+  2)  Build and install wxWidgets:
+
+instructions at https://github.com/irulanCorrino/wxWidgets-Audacity/blob/audacity-fixes-3.1.3/docs/gtk/install.md
+    cover some two additional use cases -a build with Motif instead of GTK+ and GTK+ build with debugging symbols
+    [you may want to check instructions there in details]
+    
     So...
+a. if you are not going to debug anything:
 
-    mkdir buildgtk
-    cd buildgtk
-    ../configure --with-gtk
-    make    
+     cd <wxWidgets source code>
+     mkdir buildgtk
+     cd buildgtk
+     ../configure --with-cxx=14 --with-gtk=2
+     sudo make install
+
+b. if you are going to debug everything:
+
+     cd <wxWidgets source code>
+     mkdir buildgtk-dbg
+     cd buildgtk-dbg
+     ../configure --with-cxx=14 --with-gtk=2 --enable-debug
+     sudo make install
+
+Notes:
+ 1. by default, GTK+ 2.x is used. GTK+ 3 can be specified with --with-gtk=3.
+ 2. you can install all those libraries concurrently, you just need to pass the appropriate flags when using them.
+ 3. On a multi-core system, the build process can be made much quicker using the "-j" switch, set to the number of
+   available cores. For example, with an 2 core processor:
+     sudo make -j2 install
+
+The simplest errors.
+For any configure errors: please look at config.log file which was generated during configure run, it usually contains some useful information.
+
+a. configure reports, that you don't have GTK+ 1.2/2.0/3.0 installed although you are very sure you have. Well, you have installed it, but you also have another version of the GTK+ installed, which you may need to remove including other versions of glib (and its headers). Or maybe you installed it in a non-default location and configure can't find it there, so please check that your PATH variable includes the path to the correct gtk-config/pkg-config. Also check that your LD_LIBRARY_PATH or equivalent variable contains the path to GTK+ libraries if they were installed in a non-default location.
+
+b. You get errors from make: please use GNU make instead of the native make program. Currently wxWidgets can be built only with GNU make, BSD make and Solaris make. Other versions might work or not (any which don't have VPATH support definitely won't).
+
+c. You get errors during compilation: The reason is that you probably have a broken compiler. GCC 2.8 and earlier versions and egcs are likely to cause problems due to incomplete support for C++ and optimisation bugs. Best to use GCC 2.95 or later.
+
+d. You get immediate segfault when starting any sample or application: This is either due to having compiled the library with different flags or options than your program - typically you might have the __WXDEBUG__ option set for the library but not for your program - or due to using a compiler with optimisation bugs.
+
 
   3) Having got this far, it is well worth trying out building some wxWidgets
     examples to confirm that building has worked OK
 
 Audacity:
 
-These are old instructions.  See our wiki and use 
-CMake for 2.4.0 and later, rather than as here automake.
+Getting the Audacity source code.
+For developers, the current development code is available from Github.
+Clone the repository https://github.com/irulanCorrino/audacity-2-4-2.git
 
-  1) Create a 'build' subdirectory under Audacity and change to it.
+Building Audacity
 
-  2) Now to build Audacity itself.  
-    Using a build directory (and .. in the command) keeps source and object files
-    in separate directories.
+As long as "/usr/local/bin" is in your PATH, then the wx-config should be found
+when you "cmake" Audacity.
 
-    ../configure --with-lib-preference="local system"
+If the path to wxWidgets isn't in PATH, then add the option:
+-DwxWidgets_CONFIG_EXECUTABLE=<path to>/wx-config
 
-    make
-    make install  # as root
+1. Make a build directory under the audacity git directory:
+   cd <audacity source code>
+   mkdir build
+   cd build
+
+2. Generate the makefiles:
+   cmake -DCMAKE_BUILD_TYPE=Release -Daudacity_use_ffmpeg=loaded ..
+
+3. Build Audacity:
+   make
+
+For multi-core processors, the "-j" switch may be used for faster building,
+for example, with a 2 core CPU:
+   make -j2
+
+4. Testing the build:
+Adding a "Portable Settings" folder allows Audacity to ignore the settings
+of any existing Audacity installation.
+
+    cd bin/Release
+    mkdir "Portable Settings"
+    ./audacity
+
+
+Installing Audacity
+
+    cd <build directory>
+    sudo make install
+
+
+Options:
+
+The options in the above example will produce a full release build, with FFmpeg
+enabled. A full list of option is provided in the Appendix
+or may be listed in the terminal by running:
+    cmake -LH
+
+
+Installing the manual:
+
+The Audacity manual is html, and is identical for Windows, Mac and Linux.
+The manual may be downloaded as a ZIP archive from:
+Current version: https://www.fosshub.com/Audacity.html
+Old versions: https://www.fosshub.com/Audacity-old.html
+
+Assuming that Audacity has been installed to /usr/local/ (default).
+From the directory containing the manual ZIP archive:
+
+   sudo unzip audacity-manual-2.4.2.zip -d /usr/local/share/audacity/help
+
+
+
+---
+
+Appendix.
+
+// Choose the type of build, options are: None Debug Release RelWithDebInfo
+MinSizeRel ...
+CMAKE_BUILD_TYPE:STRING=
+
+// Install path prefix, prepended onto install directories.
+CMAKE_INSTALL_PREFIX:PATH=/usr/local
+
+// Path to a library.
+LIB_FLAC:FILEPATH=/usr/local/lib/libFLAC.so
+
+// Path to a library.
+LIB_FLAC++:FILEPATH=/usr/local/lib/libFLAC++.so
+
+// Path to a library.
+LIB_SoundTouch:FILEPATH=/usr/local/lib/libSoundTouch.so
+
+// Path to a library.
+LIB_expat:FILEPATH=/usr/local/lib/libexpat.so
+
+// Path to a library.
+LIB_id3tag:FILEPATH=/usr/local/lib/libid3tag.so
+
+// Path to a library.
+LIB_m:FILEPATH=/usr/lib/libm.so
+
+// Path to a library.
+LIB_mad:FILEPATH=/usr/local/lib/libmad.so
+
+// Path to a library.
+LIB_ogg:FILEPATH=/usr/local/lib/libogg.so
+
+// Path to a library.
+LIB_sndfile:FILEPATH=/usr/local/lib/libsndfile.so
+
+// Path to a library.
+LIB_soxr:FILEPATH=/usr/local/lib/libsoxr.so
+
+// Path to a library.
+LIB_twolame:FILEPATH=/usr/local/lib/libtwolame.so
+
+// Path to a library.
+LIB_vamp-hostsdk:FILEPATH=/usr/local/lib/libvamp-hostsdk.so
+
+// Path to a library.
+LIB_vorbis:FILEPATH=/usr/local/lib/libvorbis.so
+
+// Path to a library.
+LIB_vorbisenc:FILEPATH=/usr/local/lib/libvorbisenc.so
+
+// Path to a library.
+LIB_vorbisfile:FILEPATH=/usr/local/lib/libvorbisfile.so
+
+// Path to a library.
+LIB_z:FILEPATH=/usr/lib/libz.so
+
+// Library preference [system (if available), local]
+audacity_lib_preference:STRING=system
+
+// Use expat library [system (if available), local]
+audacity_use_expat:STRING=system
+
+// Use ffmpeg library [loaded, linked, off]
+audacity_use_ffmpeg:STRING=loaded
+
+// Use flac library [system (if available), local, off]
+audacity_use_flac:STRING=system
+
+// Use id3tag library [system (if available), local, off]
+audacity_use_id3tag:STRING=system
+
+// Use LADSPA plug-in support [on, off]
+audacity_use_ladspa:BOOL=ON
+
+// Use lame library [system (if available), local]
+audacity_use_lame:STRING=local
+
+// Use lv2 library [system (if available), local, off]
+audacity_use_lv2:STRING=local
+
+// Use mad library [system (if available), local, off]
+audacity_use_mad:STRING=system
+
+// Use midi library [system (if available), local, off]
+audacity_use_midi:STRING=local
+
+// Use nyquist library [local, off]
+audacity_use_nyquist:STRING=local
+
+// Use ogg library [system (if available), local, off]
+audacity_use_ogg:STRING=system
+
+// Use the portaudio ALSA interface if available
+audacity_use_pa_alsa:BOOL=YES
+
+// Use the JACK audio interface if available [loaded, linked, off]
+audacity_use_pa_jack:STRING=off
+
+// Use the OSS audio interface if available
+audacity_use_pa_oss:BOOL=YES
+
+// Use precompiled headers [yes, no]
+audacity_use_pch:BOOL=YES
+
+// Use portaudio library [local]
+audacity_use_portaudio:STRING=local
+
+// Use portmixer library [local, off]
+audacity_use_portmixer:STRING=local
+
+// Use portsmf library [system (if available), local, off]
+audacity_use_portsmf:STRING=local
+
+// Use sbsms library [local, off]
+audacity_use_sbsms:STRING=local
+
+// Use sndfile library [system (if available), local]
+audacity_use_sndfile:STRING=system
+
+// Use soundtouch library [system (if available), local, off]
+audacity_use_soundtouch:STRING=system
+
+// Use soxr library [system (if available), local]
+audacity_use_soxr:STRING=system
+
+// Use twolame library [system (if available), local, off]
+audacity_use_twolame:STRING=system
+
+// Use vamp library [system (if available), local, off]
+audacity_use_vamp:STRING=system
+
+// Use vorbis library [system (if available), local, off]
+audacity_use_vorbis:STRING=system
+
+// Use VST2 plug-in support [on, off]
+audacity_use_vst:BOOL=ON
+
+// Use wxwidgets library [system (if available), local]
+audacity_use_wxwidgets:STRING=system
+
+// Location of wxWidgets library configuration provider binary (wx-config).
+wxWidgets_CONFIG_EXECUTABLE:FILEPATH=/usr/local/bin/wx-config
+
+// Use debug build?
+wxWidgets_USE_DEBUG:BOOL=OFF
+
+// Location of wxWidgets resource file compiler binary (wxrc)
+wxWidgets_wxrc_EXECUTABLE:FILEPATH=/usr/local/bin/wxrc
