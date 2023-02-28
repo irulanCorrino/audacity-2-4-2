@@ -28,10 +28,10 @@ Dependencies:
 
 Audacity's fork of wxWidgets 3.1.3 (https://github.com/audacity/wxWidgets) should
 be used as this includes bug fixes that are not yet available upstream.
-WxWidgets should be built with gtk2 as gtk3 is not yet fully supported.
+[a warning from previous maintainers, they have written this build.txt long long ago and since then the app was switched to using gtk3 version of widgets, so here it is: 'WxWidgets should be built with gtk2 as gtk3 is not yet fully supported.' —i have changed that in the instructions by now]
 
-- libasound and gtk are required. Having gtk2 and gtk3 too  
-  may not be required, but compilation works if both are.
+- libasound and gtk3 are required. [obsolete, i guess: 'Having gtk2 and gtk3 too  
+  may not be required, but compilation works if both are.']
 
 (The package names below are those used by Ubuntu 20.04.)
 For Debian / Ubuntu based distributions, these packages may be installed from
@@ -44,7 +44,7 @@ the command line with:
 - python3-minimal
 - libavformat-dev
 - libjack-jackd2-dev
-- WxWidgets 3.1 built with gtk2. (see note below)
+- WxWidgets 3.1 built with gtk3. (see note below)
 
 
 wxWidgets:
@@ -75,7 +75,7 @@ a. if you are not going to debug anything:
      cd <wxWidgets source code>
      mkdir buildgtk
      cd buildgtk
-     ../configure --with-cxx=14 --with-gtk=2
+     ../configure --with-cxx=14 --with-gtk=3
      sudo make install
 
 b. if you are going to debug everything:
@@ -83,7 +83,7 @@ b. if you are going to debug everything:
      cd <wxWidgets source code>
      mkdir buildgtk-dbg
      cd buildgtk-dbg
-     ../configure --with-cxx=14 --with-gtk=2 --enable-debug
+     ../configure --with-cxx=14 --with-gtk=3 --enable-debug
      sudo make install
 
 Notes:
