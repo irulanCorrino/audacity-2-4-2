@@ -1,7 +1,8 @@
 <p align="center">
   <img src="https://user-images.githubusercontent.com/98284211/216677522-ce61c475-77f2-42cc-8207-b1c1c8728104.png" />
 </p>
-
+ <div align="center">TODO: currently i am updating libraries to match their recent versions to make a build possible</div>
+ 
 ## <div align="center">audacity-2-4-2</div>
 
  <div align="center"><ins>minimalist DAW [old school version w/o 'non-destructive editing' or SQLite3-based file format]</ins></div>
